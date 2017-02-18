@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:webService="http://www.arifolth.ru/webService"
+	 targetNamespace="http://www.arifolth.ru/webService"
+	 elementFormDefault="unqualified"
+	 attributeFormDefault="unqualified">
+
+    <xs:complexType name="ExceptionType">
+        <xs:sequence>
+            <xs:element name="message" type="xs:string" minOccurs="0"/>
+            <xs:element name="cause" type="webService:ExceptionType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="code" type="xs:int"/>
+    </xs:complexType>
+
+    <xs:complexType name="ServiceRequest">
+        <xs:sequence>
+            <xs:element name="requestBody" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ServiceResponse">
+        <xs:sequence>
+            <xs:element name="responseBody" type="xs:base64Binary"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:element name="ServiceRequest" type="webService:ServiceRequest"/>
+    <xs:element name="ServiceResponse" type="webService:ServiceResponse"/>
+    <xs:element name="Fault" type="webService:ExceptionType"/>
+</xs:schema>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>ws</artifactId>
+  <packaging>jar</packaging>
+
+  <name>Benchmark WebService Module</name>
+  <properties>
+    <jaxws-maven-plugin.version>2.1</jaxws-maven-plugin.version>
+  </properties>
+
+  <parent>
+    <groupId>ru.arifolth.benchmark</groupId>
+    <artifactId>Modules</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>ru.arifolth.benchmark</groupId>
+      <artifactId>common</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.openejb</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>6.0-5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-api</artifactId>
+      <version>2.4.6</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.jvnet.jax-ws-commons</groupId>
+          <artifactId>jaxws-maven-plugin</artifactId>
+          <version>${jaxws-maven-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet.jax-ws-commons</groupId>
+        <artifactId>jaxws-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>basic</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>wsimport</goal>
+            </goals>
+            <configuration>
+              <packageName>ru.arifolth.ws</packageName>
+              <wsdlFiles>
+                <wsdlFile>${basedir}/src/main/resources/wsdl/WebService.wsdl</wsdlFile>
+              </wsdlFiles>
+              <!-- Keep generated files -->
+              <keep>true</keep>
+              <!-- generated source files destination-->
+              <sourceDestDir>${basedir}/src/main/java</sourceDestDir>
+              <verbose>true</verbose>
+              <target>${jaxws-maven-plugin.version}</target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- adding generated source -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/src/main/java/ru/arifolth/ws</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- clean up the generated mess-->
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/src/main/java/ru/arifolth/ws</directory>
+              <includes>
+                <include>**/*.java</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
