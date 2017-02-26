@@ -99,7 +99,7 @@ public class Benchmark implements Callable<BenchmarkItem> {
 
                         LOGGER.trace("Starting Jetty...");
                         server.start();
-                        latch.await();
+                        latch.await(1, TimeUnit.MINUTES);
                         LOGGER.trace("Stopping Jetty.");
                         server.stop();
                     } catch (Exception e) {
@@ -159,8 +159,6 @@ public class Benchmark implements Callable<BenchmarkItem> {
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
         } finally {
-            latch.await();
-
             executorService.shutdown();
             executorService.awaitTermination(1, TimeUnit.MINUTES);
             LOGGER.info("Stop Benchmarking EmbeddedJetty.");

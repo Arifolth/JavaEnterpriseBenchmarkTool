@@ -58,7 +58,7 @@ public class Benchmark implements Callable<BenchmarkItem> {
                     LOGGER.debug("Publishing WS Endpoint at http://127.0.0.1:8080/WebService?wsdl");
                     Endpoint endpoint = Endpoint.publish("http://127.0.0.1:8080/WebService?wsdl", new WebServiceImpl());
                     try {
-                        latch.await();
+                        latch.await(1, TimeUnit.MINUTES);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     } finally {
@@ -112,7 +112,6 @@ public class Benchmark implements Callable<BenchmarkItem> {
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
         } finally {
-            latch.await();
             executorService.shutdown();
             executorService.awaitTermination(1, TimeUnit.MINUTES);
             LOGGER.info("Stop Benchmarking WS.");

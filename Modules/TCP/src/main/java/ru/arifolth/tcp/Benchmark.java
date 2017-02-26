@@ -175,7 +175,7 @@ public class Benchmark implements Callable<BenchmarkItem> {
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
         } finally {
-            countDownLatch.await();
+            countDownLatch.await(1, TimeUnit.MINUTES);
             executorService.shutdown();
             executorService.awaitTermination(1, TimeUnit.SECONDS);
             LOGGER.info("Stop Benchmarking TCP.");
