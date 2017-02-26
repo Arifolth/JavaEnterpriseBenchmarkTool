@@ -3,11 +3,18 @@
     <!-- Logging configuration -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <Target>System.out</Target>
-        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
-        </filter>-->
+        </filter>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>log.log</file>
+        <append>true</append>
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
@@ -25,15 +32,17 @@
     </appender>
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
         <appender-ref ref="STDERR" />
     </root>
     <root level="DEBUG">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
     <root level="WARN">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
     <root level="TRACE">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>
