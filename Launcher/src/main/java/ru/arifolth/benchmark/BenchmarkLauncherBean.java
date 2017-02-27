@@ -76,8 +76,10 @@ public class BenchmarkLauncherBean {
             futures.add(executorService.submit(new ru.arifolth.tcp.Benchmark()));
 
             futures.add(executorService.submit(new ru.arifolth.http.Benchmark()));
-            generateReport();
+
         } finally {
+            generateReport();
+
             executorService.shutdown();
             executorService.awaitTermination(1, TimeUnit.MINUTES);
         }

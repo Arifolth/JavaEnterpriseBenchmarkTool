@@ -21,7 +21,7 @@
     <module>xslt</module>
     <module>ws</module>
     <module>tcp</module>
-    <module>EmbeddedJetty</module>
+    <module>embeddedhttp</module>
   </modules>
 
   <dependencies>
