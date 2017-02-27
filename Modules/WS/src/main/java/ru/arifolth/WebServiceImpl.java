@@ -23,20 +23,19 @@
 
 package ru.arifolth;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.cxf.annotations.SchemaValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import ru.arifolth.benchmark.BenchmarkHelper;
-import ru.arifolth.ws.*;
+import ru.arifolth.ws.ServiceFault;
+import ru.arifolth.ws.ServiceRequest;
+import ru.arifolth.ws.ServiceResponse;
+import ru.arifolth.ws.WebServiceInterface;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by ANilov on 14.02.2017.

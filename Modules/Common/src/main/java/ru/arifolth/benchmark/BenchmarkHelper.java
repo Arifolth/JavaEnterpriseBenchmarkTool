@@ -23,12 +23,9 @@
 
 package ru.arifolth.benchmark;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.*;
 
 /**
  * Created by ANilov on 16.02.2017.
@@ -38,14 +35,31 @@ public class BenchmarkHelper {
     private BenchmarkHelper() {
     }
 
-    public static File generateFile() throws IOException {
-        return generateFixedSizeFile(1024 * 1024 * 10);
-    }
-
     public static File generateFixedSizeFile(int size) throws IOException {
-        File file = File.createTempFile(RandomStringUtils.randomAlphabetic(5), "tmp");
+        FileOutputStream fileOutputStream = null;
+        OutputStream os = null;
 
-        FileUtils.writeStringToFile(file, RandomStringUtils.randomAlphabetic(size), Charset.defaultCharset());
+        //fix ru.arifolth.benchmark.BenchmarkHelper.generateFixedSizeFile(BenchmarkHelper.java:48)
+        //org.apache.commons.io.FileUtils.writeStringToFile(FileUtils.java:1947)
+        File file = File.createTempFile(RandomStringUtils.randomAlphabetic(5), "tmp");
+        try {
+            fileOutputStream = new FileOutputStream(file);
+            os = new BufferedOutputStream(fileOutputStream);
+
+            os.write(RandomStringUtils.randomAlphabetic(size).getBytes());
+
+            os.flush();
+        } catch (Throwable th) {
+            th.printStackTrace();
+        }
+        finally {
+
+            if(null != fileOutputStream)
+                fileOutputStream.close();
+
+            if(null != os)
+                os.close();
+        }
 
         return file;
     }

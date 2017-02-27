@@ -10,7 +10,7 @@
     <artifactId>embedded-tomcat</artifactId>
     <packaging>jar</packaging>
 
-    <name>Benchmark Embedded Jetty</name>
+    <name>Benchmark Embedded Http Server</name>
 
     <parent>
         <groupId>ru.arifolth.benchmark</groupId>

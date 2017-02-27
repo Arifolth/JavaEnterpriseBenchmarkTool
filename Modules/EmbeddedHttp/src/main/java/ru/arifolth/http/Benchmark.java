@@ -96,10 +96,10 @@ public class Benchmark implements Callable<BenchmarkItem> {
                             }
                         });
 
-                        LOGGER.trace("Starting Jetty...");
+                        LOGGER.trace("Starting Http Server...");
                         server.start();
                     } catch (Exception e) {
-                        LOGGER.error("Jetty Error: ", e);
+                        LOGGER.error("Http Server Error: ", e);
                     }
                 }
 
@@ -137,7 +137,7 @@ public class Benchmark implements Callable<BenchmarkItem> {
                         for (int mb : new int[]{10 * 1024 * 1024, 25 * 1024 * 1024, 50 * 1024 * 1024, 75 * 1024 * 1024})
                             requestFile(mb);
                     } finally {
-                        LOGGER.trace("Stopping Jetty.");
+                        LOGGER.trace("Stopping Http Server.");
                         server.stop(1);
                         ((ExecutorService)server.getExecutor()).shutdown();
 

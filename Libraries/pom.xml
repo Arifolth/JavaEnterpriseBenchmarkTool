@@ -24,7 +24,6 @@
         <commons-logging.version>1.1.1</commons-logging.version>
         <derby.version>10.9.1.0</derby.version>
         <commons-lang3.version>3.5</commons-lang3.version>
-        <commons-lang.version>2.6</commons-lang.version>
         <commons-io.version>2.5</commons-io.version>
         <version.jackson-databind>2.6.7</version.jackson-databind>
         <woodstox-core-asl.version>4.4.1</woodstox-core-asl.version>
@@ -41,11 +40,6 @@
                 <groupId>org.codehaus.woodstox</groupId>
                 <artifactId>woodstox-core-asl</artifactId>
                 <version>${woodstox-core-asl.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-lang</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>${commons-lang.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>

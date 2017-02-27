@@ -23,8 +23,9 @@
 
 package ru.arifolth.tcp;
 
+
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.arifolth.benchmark.*;
@@ -32,6 +33,7 @@ import ru.arifolth.benchmark.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.util.concurrent.*;
 
 /**
@@ -51,7 +53,7 @@ public class Benchmark implements Callable<BenchmarkItem> {
             executorService.submit(new Runnable() {
                 private File file;
                 private ServerSocket serverSocket;
-                private BufferedOutputStream bufferedOutputStream;
+                private PrintWriter out;
 
                 @Override
                 public void run() {
@@ -60,16 +62,18 @@ public class Benchmark implements Callable<BenchmarkItem> {
 
                         Socket connectionSocket = serverSocket.accept();
                         LOGGER.trace("Accepted connection : " + connectionSocket);
-                        bufferedOutputStream = new BufferedOutputStream(connectionSocket.getOutputStream());
 
                         try {
-                            for (int mb : new int[]{10 * 1024 * 1024, 25 * 1024 * 1024, 50 * 1024 * 1024, 75 * 1024 * 1024})
+                            out = new PrintWriter(connectionSocket.getOutputStream(), true);
+                            for (int mb : new int[]{10 * 1024 * 1024, 25 * 1024 * 1024, 50 * 1024 * 1024, 75 * 1024 * 1024}) {
                                 sendFile(mb);
-
+                            }
                         } catch (IOException ex) {
                             LOGGER.error(ex.getMessage());
+                        } catch (Throwable th) {
+                            LOGGER.error(th.getMessage());
                         } finally {
-                            bufferedOutputStream.close();
+                            out.close();
                             connectionSocket.close();
                         }
 
@@ -88,84 +92,57 @@ public class Benchmark implements Callable<BenchmarkItem> {
                 }
 
                 private void sendFile(int size) throws IOException {
-                    try {
-                        file = BenchmarkHelper.generateFixedSizeFile(size);
+                    file = BenchmarkHelper.generateFixedSizeFile(size);
 
-                        byte[] bytes = FileUtils.readFileToByteArray(file);
+                    Timer timer = new Timer();
+                    LOGGER.trace("Server File Sending....");
+                    out.println(FileUtils.readFileToString(file, Charset.defaultCharset()));
 
-                        Timer timer = new Timer();
-                        LOGGER.trace("Server File Sending....");
-                        bufferedOutputStream.write(bytes, 0, bytes.length);
-                        bufferedOutputStream.flush();
-
-                        LOGGER.trace("Server File Sent....");
-                        long elapsedTime = timer.getElapsedMillis();
-                        LOGGER.debug("TCPServer: " + bytes.length / (1024 * 1024) + "Mb file transfer: " + bytes.length / elapsedTime / 1000 + " MB/s");
-                        benchmarkItem.getBenchmarkResults().add(new BenchmarkResult(bytes.length / (1024 * 1024) + "Mb file transfer", bytes.length / elapsedTime / 1000, MeasureEnum.MBPS));
-                    } finally {
-                        if(file != null)
-                            file.delete();
-                    }
+                    LOGGER.trace("Server File Sent....");
+                    long elapsedTime = timer.getElapsedMillis();
+                    LOGGER.debug("TCPServer: " + size / (1024 * 1024) + "Mb file transfer: " + size / elapsedTime / 1000 + " MB/s");
+                    benchmarkItem.getBenchmarkResults().add(new BenchmarkResult(size / (1024 * 1024) + "Mb file transfer", size / elapsedTime / 1000, MeasureEnum.MBPS));
                 }
             });
             executorService.submit(new Runnable() {
-                private File file = File.createTempFile(RandomStringUtils.randomAlphabetic(5), "tmp");
+                private InputStreamReader inputStreamReader;
                 private final static String serverIP = "127.0.0.1";
                 private final static int serverPort = 3248;
                 private Socket clientSocket;
-                private FileOutputStream fos;
 
                 @Override
                 public void run() {
-                    byte[] aByte = new byte[32*1024];
-                    int bytesRead;
-
                     try {
                         clientSocket = new Socket(serverIP, serverPort);
 
-                        clientSocket.setReceiveBufferSize(BYTES);
-                        InputStream is = clientSocket.getInputStream();
                         LOGGER.trace("Client connected....");
 
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        LOGGER.trace("Client File Recieving....");
+                        BufferedReader bufferedReader = null;
+                        try {
+                            inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
+                            bufferedReader = new BufferedReader(inputStreamReader);
 
-                        if (is != null) {
-                            BufferedOutputStream bos;
-
-                            fos = new FileOutputStream(file);
-                            bos = new BufferedOutputStream(fos);
-                            LOGGER.trace("Client File Recieving....");
-                            bytesRead = is.read(aByte, 0, aByte.length);
-
-                            do {
-                                baos.write(aByte);
-                                bytesRead = is.read(aByte);
-                            } while (bytesRead != -1);
-
-                            bos.write(baos.toByteArray());
-                            bos.flush();
-
-                            bos.close();
-                            baos.close();
-                            is.close();
-
-                            LOGGER.trace("Client File Recieved.");
+                            for (String line; (line = bufferedReader.readLine()) != null; ) {
+                            }
+                        } finally {
+                            if(bufferedReader != null)
+                                bufferedReader.close();
+                            if(inputStreamReader != null)
+                                inputStreamReader.close();
                         }
+
+                        LOGGER.trace("Client File Recieved.");
+
                     } catch (IOException ex) {
                         LOGGER.error(ex.getMessage());
                     } finally {
                         try {
-                            if (fos != null)
-                                fos.close();
-
                             if (clientSocket != null)
                                 clientSocket.close();
-
                         } catch (IOException ex) {
                             LOGGER.error(ex.getMessage());
                         }
-
-                        file.delete();
 
                         LOGGER.trace("Client Terminating.");
                         countDownLatch.countDown();
