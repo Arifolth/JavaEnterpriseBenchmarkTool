@@ -1,14 +1,31 @@
 Java Enterprise Benchmark Tool
-performs simple workload tests on target machine
+Performs simple workload tests on target machine
+
+Build and run JDK: 1.6+
+
+File transfer speed tests:
+- TCP
+- HTTP
+- SOAP
+HDD test:
+- read/write ratio
+XSLT transformation:
+- Xalan
+- JDK bundled Xalan
+- Saxon
+JavaDB (Derby) CRUD operations test
+- Create
+- Read
+- Update
+- Delete
 
 Build
     execute 'mvn clean package', it will generate an "executable" JAR file
-    benchmarkroot\Launcher\target\launcher-1.0-SNAPSHOT.jar
+    %ROOT%\Launcher\target\launcher-1.0-SNAPSHOT.jar
 
 Run
     Use either script to launch program on target machine:
 
-    benchmarkroot\Launcher\bin\benchmarktool.bat
+    %ROOT%\Launcher\target\benchmarktool.bat
     or
-    benchmarkroot\Launcher\bin\benchmarktool.sh
-
+    %ROOT%\Launcher\target\benchmarktool.sh
