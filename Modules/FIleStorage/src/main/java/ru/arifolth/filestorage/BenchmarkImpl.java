@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise Benchmark Tool
+ *  Java Enterprise BenchmarkImpl Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -26,21 +26,17 @@ package ru.arifolth.filestorage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.arifolth.benchmark.BenchmarkItem;
-import ru.arifolth.benchmark.BenchmarkResult;
-import ru.arifolth.benchmark.MeasureEnum;
-import ru.arifolth.benchmark.Timer;
+import ru.arifolth.benchmark.*;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ANilov on 11.02.2017.
  */
-public class Benchmark implements Callable<BenchmarkItem> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Benchmark.class);
+public class BenchmarkImpl implements Benchmark {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkImpl.class);
     private BenchmarkItem benchmarkItem = new BenchmarkItem("File Storage");
 
     @Override
@@ -115,5 +111,10 @@ public class Benchmark implements Callable<BenchmarkItem> {
             if(file != null)
                 file.delete();
         }
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName();
     }
 }

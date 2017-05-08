@@ -27,10 +27,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.arifolth.benchmark.BenchmarkItem;
-import ru.arifolth.benchmark.BenchmarkResult;
-import ru.arifolth.benchmark.MeasureEnum;
-import ru.arifolth.benchmark.Timer;
+import ru.arifolth.benchmark.*;
 
 import java.io.*;
 import java.sql.*;
@@ -39,8 +36,8 @@ import java.util.concurrent.Callable;
 /**
  * Created by ANilov on 11.02.2017.
  */
-public class Benchmark implements Callable<BenchmarkItem> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Benchmark.class);
+public class BenchmarkImpl implements Benchmark {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkImpl.class);
     public static final String JDBC_DERBY_JAVA_DB = "jdbc:derby:JavaDB;create=true";
     public static final String ORG_APACHE_DERBY_JDBC_EMBEDDED_DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
     private BenchmarkItem benchmarkItem = new BenchmarkItem("JavaDB");
@@ -194,5 +191,10 @@ public class Benchmark implements Callable<BenchmarkItem> {
         Class.forName(driver);
         String url = JDBC_DERBY_JAVA_DB;
         return DriverManager.getConnection(url);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName();
     }
 }

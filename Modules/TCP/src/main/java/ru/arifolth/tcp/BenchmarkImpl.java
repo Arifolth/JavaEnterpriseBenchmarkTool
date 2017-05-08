@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise Benchmark Tool
+ *  Java Enterprise BenchmarkImpl Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -25,7 +25,6 @@ package ru.arifolth.tcp;
 
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.arifolth.benchmark.*;
@@ -39,8 +38,8 @@ import java.util.concurrent.*;
 /**
  * Created by ANilov on 11.02.2017.
  */
-public class Benchmark implements Callable<BenchmarkItem> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Benchmark.class);
+public class BenchmarkImpl implements Benchmark {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkImpl.class);
     public static final int BYTES = 1024 * 1024 * 10;
     private final CountDownLatch countDownLatch = new CountDownLatch(2);
     private ExecutorService executorService = Executors.newCachedThreadPool();
@@ -159,5 +158,10 @@ public class Benchmark implements Callable<BenchmarkItem> {
         }
 
         return benchmarkItem;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName();
     }
 }

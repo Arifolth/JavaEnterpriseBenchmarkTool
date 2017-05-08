@@ -20,7 +20,9 @@
     <properties>
         <slf4j-api.version>1.7.22</slf4j-api.version>
         <logback.version>1.1.8</logback.version>
-        <spring-context.version>4.1.0.RELEASE</spring-context.version>
+        <!-- spring beans and other spring core -->
+        <spring.version>4.3.8.RELEASE</spring.version>
+
         <commons-logging.version>1.1.1</commons-logging.version>
         <derby.version>10.9.1.0</derby.version>
         <commons-lang3.version>3.5</commons-lang3.version>
@@ -74,7 +76,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>${spring-context.version}</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-logging</groupId>

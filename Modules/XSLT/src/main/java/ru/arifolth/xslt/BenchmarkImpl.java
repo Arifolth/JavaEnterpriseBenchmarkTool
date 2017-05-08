@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise Benchmark Tool
+ *  Java Enterprise BenchmarkImpl Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -25,10 +25,7 @@ package ru.arifolth.xslt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.arifolth.benchmark.BenchmarkItem;
-import ru.arifolth.benchmark.BenchmarkResult;
-import ru.arifolth.benchmark.MeasureEnum;
-import ru.arifolth.benchmark.Timer;
+import ru.arifolth.benchmark.*;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -38,8 +35,8 @@ import java.util.concurrent.Callable;
 /**
  * Created by ANilov on 11.02.2017.
  */
-public class Benchmark implements Callable<BenchmarkItem> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Benchmark.class);
+public class BenchmarkImpl implements Benchmark {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkImpl.class);
     private BenchmarkItem benchmarkItem = new BenchmarkItem("XSLT");
 
     private final static String[] xsltProcessors = new String[]{
@@ -72,5 +69,10 @@ public class Benchmark implements Callable<BenchmarkItem> {
         } finally {
             LOGGER.info("Stop Benchmarking XSLT.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName();
     }
 }

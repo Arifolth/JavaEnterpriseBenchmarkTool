@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise Benchmark Tool
+ *  Java Enterprise BenchmarkImpl Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -31,6 +31,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -67,16 +68,9 @@ public class BenchmarkLauncherBean {
 
     public void perform() throws InterruptedException, ExecutionException, IOException {
         try {
-            futures.add(executorService.submit(new ru.arifolth.filestorage.Benchmark()));
-            futures.add(executorService.submit(new ru.arifolth.xslt.Benchmark()));
-            futures.add(executorService.submit(new ru.arifolth.derby.Benchmark()));
-
-            futures.add(executorService.submit(new ru.arifolth.webservice.Benchmark()));
-
-            futures.add(executorService.submit(new ru.arifolth.tcp.Benchmark()));
-
-            futures.add(executorService.submit(new ru.arifolth.http.Benchmark()));
-
+            for(Benchmark benchmark : SpringFactoriesLoader.loadFactories(Benchmark.class, null)) {
+                futures.add(executorService.submit(benchmark));
+            }
         } finally {
             generateReport();
 

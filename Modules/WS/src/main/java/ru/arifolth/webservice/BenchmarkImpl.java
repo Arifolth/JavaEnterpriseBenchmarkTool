@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise Benchmark Tool
+ *  Java Enterprise BenchmarkImpl Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -40,8 +40,8 @@ import java.util.concurrent.*;
 /**
  * Created by ANilov on 11.02.2017.
  */
-public class Benchmark implements Callable<BenchmarkItem> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Benchmark.class);
+public class BenchmarkImpl implements Benchmark {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkImpl.class);
     private BenchmarkItem benchmarkItem = new BenchmarkItem("WebService[SOAP]");
     private ExecutorService executorService;
     private final CountDownLatch latch = new CountDownLatch(1);
@@ -118,5 +118,10 @@ public class Benchmark implements Callable<BenchmarkItem> {
         }
 
         return benchmarkItem;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getCanonicalName();
     }
 }

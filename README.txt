@@ -1,8 +1,9 @@
 Java Enterprise Benchmark Tool
 Performs simple workload tests on target machine
 
-Build and run JDK: 1.6+
+Build and run JDK: 1.7+
 
+Available modules:
 File transfer speed tests:
 - TCP
 - HTTP
@@ -18,6 +19,10 @@ JavaDB (Derby) CRUD operations test
 - Read
 - Update
 - Delete
+
+Features:
+- Uses configurable Logger to output messages
+- Modular structure (with module auto-loading)
 
 Build
     execute 'mvn clean package', it will generate an "executable" JAR file
