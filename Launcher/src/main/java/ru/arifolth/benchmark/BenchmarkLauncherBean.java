@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise BenchmarkImpl Tool
+ *  Java Enterprise Benchmark Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -28,6 +28,7 @@ package ru.arifolth.benchmark;
  */
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,17 +55,27 @@ public class BenchmarkLauncherBean {
     private ObjectMapper objectMapper;
 
     private void generateReport() throws ExecutionException, InterruptedException, IOException {
-        BenchmarkReport benchmarkReport = new BenchmarkReport();
+        BenchmarkReport benchmarkReport = new SystemBenchmarkReport();
 
         for (Future<BenchmarkItem> future : futures) {
             benchmarkReport.getBenchmarks().add(future.get());
         }
 
         LOGGER.info("Generating Benchmark Report...");
-        FileUtils.writeStringToFile(
-                new File("BenchmarkReport.xml"),
-                objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(benchmarkReport),
-                Charset.defaultCharset());
+
+        File file = new File("BenchmarkReport.xml");
+
+        RandomAccessFile fh = null;
+
+        try {
+            fh = new RandomAccessFile(file, "rw");
+
+            fh.writeBytes(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(benchmarkReport));
+        } catch (Exception ex) {
+            if(fh != null) {
+                fh.close();
+            }
+        }
     }
 
     public void perform() throws InterruptedException, ExecutionException, IOException {

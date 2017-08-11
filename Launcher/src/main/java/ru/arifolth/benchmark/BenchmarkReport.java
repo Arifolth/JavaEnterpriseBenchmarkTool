@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise BenchmarkImpl Tool
+ *  Java Enterprise Benchmark Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -23,57 +23,14 @@
 
 package ru.arifolth.benchmark;
 
-import javax.lang.model.element.NestingKind;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Created by ANilov on 18.02.2017.
  */
-public class BenchmarkReport {
-    private String nameOS = System.getProperty("os.name");
-    private String versionOS = System.getProperty("os.version");
-    private String architectureOS = System.getProperty("os.arch");
-    private String processors = String.valueOf(Runtime.getRuntime().availableProcessors());
-    private String freeMemory = String.valueOf(Runtime.getRuntime().freeMemory());
-    long maxMemory = Runtime.getRuntime().maxMemory();
-    private String maximumMemory = (maxMemory == Long.MAX_VALUE ? "no limit" : String.valueOf(maxMemory));
-    private String totalMemory  = String.valueOf(Runtime.getRuntime().totalMemory());
-    private String usedMemory = String.valueOf(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+public abstract class BenchmarkReport {
     private Collection<BenchmarkItem> benchmarks = new ArrayList<BenchmarkItem>();
-
-    public String getUsedMemory() {
-        return usedMemory;
-    }
-
-    public String getNameOS() {
-        return nameOS;
-    }
-
-    public String getVersionOS() {
-        return versionOS;
-    }
-
-    public String getArchitectureOS() {
-        return architectureOS;
-    }
-
-    public String getProcessors() {
-        return processors;
-    }
-
-    public String getFreeMemory() {
-        return freeMemory;
-    }
-
-    public String getMaximumMemory() {
-        return maximumMemory;
-    }
-
-    public String getTotalMemory() {
-        return totalMemory;
-    }
 
     public Collection<BenchmarkItem> getBenchmarks() {
         return benchmarks;

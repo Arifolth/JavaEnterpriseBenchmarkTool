@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise BenchmarkImpl Tool
+ *  Java Enterprise Benchmark Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 

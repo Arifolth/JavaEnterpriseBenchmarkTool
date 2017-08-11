@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise BenchmarkImpl Tool
+ *  Java Enterprise Benchmark Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -40,7 +40,6 @@ import java.util.concurrent.*;
  */
 public class BenchmarkImpl implements Benchmark {
     private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkImpl.class);
-    public static final int BYTES = 1024 * 1024 * 10;
     private final CountDownLatch countDownLatch = new CountDownLatch(2);
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private BenchmarkItem benchmarkItem = new BenchmarkItem("TCPServer");
@@ -64,7 +63,7 @@ public class BenchmarkImpl implements Benchmark {
 
                         try {
                             out = new PrintWriter(connectionSocket.getOutputStream(), true);
-                            for (int mb : new int[]{10 * 1024 * 1024, 25 * 1024 * 1024, 50 * 1024 * 1024, 75 * 1024 * 1024}) {
+                            for (int mb : new int[]{10485760, 26214400, 52428800, 78643200}) {
                                 sendFile(mb);
                             }
                         } catch (IOException ex) {
@@ -99,8 +98,8 @@ public class BenchmarkImpl implements Benchmark {
 
                     LOGGER.trace("Server File Sent....");
                     long elapsedTime = timer.getElapsedMillis();
-                    LOGGER.debug("TCPServer: " + size / (1024 * 1024) + "Mb file transfer: " + size / elapsedTime / 1000 + " MB/s");
-                    benchmarkItem.getBenchmarkResults().add(new BenchmarkResult(size / (1024 * 1024) + "Mb file transfer", size / elapsedTime / 1000, MeasureEnum.MBPS));
+                    LOGGER.debug("TCPServer: " + size / (1048576) + "Mb file transfer: " + size / elapsedTime / 1000 + " MB/s");
+                    benchmarkItem.getBenchmarkResults().add(new BenchmarkResult(size / (1048576) + "Mb file transfer", size / elapsedTime / 1000, MeasureEnum.MBPS));
                 }
             });
             executorService.submit(new Runnable() {

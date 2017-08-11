@@ -23,6 +23,7 @@ JavaDB (Derby) CRUD operations test
 Features:
 - Uses configurable Logger to output messages
 - Modular structure (with module auto-loading)
+- XML format report
 
 Build
     execute 'mvn clean package', it will generate an "executable" JAR file

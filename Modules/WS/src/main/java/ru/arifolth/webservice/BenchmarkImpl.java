@@ -1,5 +1,5 @@
 /**
- *  Java Enterprise BenchmarkImpl Tool
+ *  Java Enterprise Benchmark Tool
  *  Copyright (C) 2017  Alexander Nilov arifolth@gmail.com 
  */
 
@@ -31,8 +31,12 @@ import ru.arifolth.benchmark.*;
 import ru.arifolth.ws.ServiceFault;
 import ru.arifolth.ws.ServiceRequest;
 import ru.arifolth.ws.WebService;
+import ru.arifolth.ws.WebServiceInterface;
 
+import javax.xml.ws.Binding;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Endpoint;
+import javax.xml.ws.soap.SOAPBinding;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.*;
@@ -76,6 +80,7 @@ public class BenchmarkImpl implements Benchmark {
                     try {
                         LOGGER.debug("Sending WS Request");
 
+                        //TODO: rewrite as ENUM
                         for (int mb : new int[]{10 * 1024 * 1024, 25 * 1024 * 1024, 50 * 1024 * 1024, 75 * 1024 * 1024})
                             sendFile(mb);
 
@@ -90,22 +95,36 @@ public class BenchmarkImpl implements Benchmark {
                 }
 
                 private void sendFile(int size) throws IOException, ServiceFault {
+                    Timer timer = new Timer();
+
+                    ServiceRequest serviceRequest = new ServiceRequest();
+
                     try {
                         file = BenchmarkHelper.generateFixedSizeFile(size);
 
-                        Timer timer = new Timer();
-
-                        ServiceRequest serviceRequest = new ServiceRequest();
-                        serviceRequest.setRequestBody(FileUtils.readFileToByteArray(file));
-
-                        webService.getWebServicePort().getData(serviceRequest);
-
-                        long elapsedTime = timer.getElapsedMillis();
-                        LOGGER.debug("WebService[SOAP]: " + size/(1024 * 1024) + "Mb file transfer: " + size/elapsedTime/1000 + " MB/s");
-                        benchmarkItem.getBenchmarkResults().add(new BenchmarkResult(size/(1024 * 1024) + "Mb file transfer", size/elapsedTime/1000, MeasureEnum.MBPS));
+                        if(file != null) {
+                            serviceRequest.setRequestBody(FileUtils.readFileToByteArray(file));
+                        }
                     } finally {
-                        file.delete();
+                        try {
+                            if(file != null) {
+                                file.delete();
+                            }
+                        } catch (SecurityException e) {
+                            // ignore
+                        }
                     }
+
+                    WebServiceInterface port = webService.getWebServicePort();
+                    BindingProvider bindingProvider = (BindingProvider) port;
+                    bindingProvider.getRequestContext().put("thread.local.request.context", "true");
+                    ((SOAPBinding)((BindingProvider) port).getBinding()).setMTOMEnabled(true);
+
+                    port.getData(serviceRequest);
+
+                    long elapsedTime = timer.getElapsedMillis();
+                    LOGGER.debug("WebService[SOAP]: " + size/(1024 * 1024) + "Mb file transfer: " + size/elapsedTime/1000 + " MB/s");
+                    benchmarkItem.getBenchmarkResults().add(new BenchmarkResult(size/(1024 * 1024) + "Mb file transfer", size/elapsedTime/1000, MeasureEnum.MBPS));
                 }
             });
 

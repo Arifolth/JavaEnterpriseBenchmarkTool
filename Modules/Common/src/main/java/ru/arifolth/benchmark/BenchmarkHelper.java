@@ -24,6 +24,8 @@
 package ru.arifolth.benchmark;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
@@ -31,34 +33,38 @@ import java.io.*;
  * Created by ANilov on 16.02.2017.
  */
 public class BenchmarkHelper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkHelper.class);
 
     private BenchmarkHelper() {
     }
 
     public static File generateFixedSizeFile(int size) throws IOException {
-        FileOutputStream fileOutputStream = null;
-        OutputStream os = null;
+        File file = null;
+        RandomAccessFile fh = null;
 
-        //fix ru.arifolth.benchmark.BenchmarkHelper.generateFixedSizeFile(BenchmarkHelper.java:48)
-        //org.apache.commons.io.FileUtils.writeStringToFile(FileUtils.java:1947)
-        File file = File.createTempFile(RandomStringUtils.randomAlphabetic(5), "tmp");
+        LOGGER.trace("Generating File size=" + size + "...");
+
         try {
-            fileOutputStream = new FileOutputStream(file);
-            os = new BufferedOutputStream(fileOutputStream);
+            file = File.createTempFile(RandomStringUtils.randomAlphabetic(5), ".tmp");
+            fh = new RandomAccessFile (file, "rw");
 
-            os.write(RandomStringUtils.randomAlphabetic(size).getBytes());
+            fh.writeBytes(RandomStringUtils.randomAlphabetic(size));
 
-            os.flush();
-        } catch (Throwable th) {
-            th.printStackTrace();
-        }
-        finally {
+            LOGGER.trace("File size=" + size + " generated.");
+        } catch (Exception ex) {
+            LOGGER.error("Error Generating File size=" + size + "...", ex);
 
-            if(null != fileOutputStream)
-                fileOutputStream.close();
+            if(fh != null) {
+                fh.close();
+            }
 
-            if(null != os)
-                os.close();
+            try {
+                if(file != null) {
+                    file.delete();
+                }
+            } catch (SecurityException e) {
+                // ignore
+            }
         }
 
         return file;

@@ -5,7 +5,7 @@ setlocal
 for /f "tokens=*" %%a in ('dir /b *.jar') do call :concat %%a
 
 echo clp: %clp%
-java -version:1.7 -jar -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./ -Xms512m -Xmx1280m -Dlogback.configurationFile=./logback.xml -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 launcher-1.0-SNAPSHOT.jar -cp %clp% ^
+java -version:1.8 -jar -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC -XX:HeapDumpPath=./ -Xms512m -Xmx1512m -Dlogback.configurationFile=./logback.xml -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044 launcher-1.0-SNAPSHOT.jar -cp %clp% ^
 ru.arifolth.benchmark.BenchmarkMain
 goto :eof
 
