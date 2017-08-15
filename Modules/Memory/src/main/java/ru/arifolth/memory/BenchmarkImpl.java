@@ -41,7 +41,6 @@ public class BenchmarkImpl implements Benchmark {
     @Override
     public BenchmarkItem call() throws Exception {
         LOGGER.info("Benchmarking MemCpy...");
-        File file = null;
 
         try {
             for (int mb : new int[]{10 * 1024 * 1024, 25 * 1024 * 1024, 50 * 1024 * 1024, 75 * 1024 * 1024}) {
@@ -50,13 +49,6 @@ public class BenchmarkImpl implements Benchmark {
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
         } finally {
-            try {
-                if(file != null) {
-                    file.delete();
-                }
-            } catch (SecurityException e) {
-                // ignore
-            }
             LOGGER.info("Stop Benchmarking MemCpy.");
         }
 
