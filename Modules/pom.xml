@@ -22,6 +22,7 @@
     <module>ws</module>
     <module>tcp</module>
     <module>embeddedhttp</module>
+    <module>memory</module>
   </modules>
 
   <dependencies>

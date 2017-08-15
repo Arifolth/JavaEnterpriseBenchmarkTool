@@ -95,8 +95,6 @@ public class BenchmarkImpl implements Benchmark {
                 }
 
                 private void sendFile(int size) throws IOException, ServiceFault {
-                    Timer timer = new Timer();
-
                     ServiceRequest serviceRequest = new ServiceRequest();
 
                     try {
@@ -115,7 +113,10 @@ public class BenchmarkImpl implements Benchmark {
                         }
                     }
 
+                    Timer timer = new Timer();
+
                     WebServiceInterface port = webService.getWebServicePort();
+
                     BindingProvider bindingProvider = (BindingProvider) port;
                     bindingProvider.getRequestContext().put("thread.local.request.context", "true");
                     ((SOAPBinding)((BindingProvider) port).getBinding()).setMTOMEnabled(true);

@@ -22,7 +22,7 @@
         <dependency>
             <groupId>ru.arifolth.benchmark</groupId>
             <artifactId>common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

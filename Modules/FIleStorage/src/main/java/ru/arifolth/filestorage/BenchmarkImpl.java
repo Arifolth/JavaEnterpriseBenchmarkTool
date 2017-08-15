@@ -65,6 +65,7 @@ public class BenchmarkImpl implements Benchmark {
             char[] chars = new char[1024];
             Arrays.fill(chars, 'A');
             String longLine = new String(chars);
+
             Timer timerWrite = new Timer();
 
             PrintWriter printWriter = null;
