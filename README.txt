@@ -19,6 +19,8 @@ JavaDB (Derby) CRUD operations test
 - Read
 - Update
 - Delete
+Memory test:
+- Arrays.copyOf
 
 Features:
 - Uses configurable Logger to output messages
@@ -30,8 +32,6 @@ Build
     %ROOT%\Launcher\target\launcher-1.0-SNAPSHOT.jar
 
 Run
-    Use either script to launch program on target machine:
-
-    %ROOT%\Launcher\target\benchmarktool.bat
-    or
-    %ROOT%\Launcher\target\benchmarktool.sh
+    Change current working dir to %ROOT%\Launcher\target\ folder and use either script to launch program:
+- Win platforms: benchmarktool.bat
+- Unix platforms : benchmarktool.sh
