@@ -19,8 +19,10 @@ JavaDB (Derby) CRUD operations test
 - Read
 - Update
 - Delete
-Memory test:
+Memory speed test:
 - Arrays.copyOf
+JMS sending/receiving speed test:
+- HornetQ
 
 Features:
 - Uses configurable Logger to output messages
@@ -35,3 +37,11 @@ Run
     Change current working dir to %ROOT%\Launcher\target\ folder and use either script to launch program:
 - Win platforms: benchmarktool.bat
 - Unix platforms : benchmarktool.sh
+
+Result
+    Look at report BenchmarkResult.xml
+
+TODO:
+- one more abstraction layer for a benchmark item, so the item may have several tests incorporated
+- externalized configuration
+- JavascriptEngine benchmark

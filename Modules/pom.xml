@@ -23,6 +23,7 @@
     <module>tcp</module>
     <module>embeddedhttp</module>
     <module>memory</module>
+    <module>jms</module>
   </modules>
 
   <dependencies>
