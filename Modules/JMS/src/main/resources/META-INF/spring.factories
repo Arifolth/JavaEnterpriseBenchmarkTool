@@ -1,1 +1,2 @@
 ru.arifolth.benchmark.Benchmark=ru.arifolth.jms.BenchmarkImpl
+ru.arifolth.jms.AbstractJMSBenchmark=ru.arifolth.jms.HornetQBenchmark

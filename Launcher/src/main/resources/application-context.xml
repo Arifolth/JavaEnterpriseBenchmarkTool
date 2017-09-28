@@ -16,11 +16,10 @@
     <bean id="executorService" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
         <property name="corePoolSize" value="1" />
         <property name="maxPoolSize" value="1" />
-        <property name="queueCapacity" value="25" />
     </bean>
 
     <bean id="objectMapper" class="com.fasterxml.jackson.dataformat.xml.XmlMapper">
-        <property name="serializationInclusion" value="NON_NULL"/>
+        <property name="serializationInclusion" value="NON_EMPTY"/>
     </bean>
 
 </beans>

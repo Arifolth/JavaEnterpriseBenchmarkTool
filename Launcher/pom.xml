@@ -44,15 +44,16 @@
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>woodstox-core-asl</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.arifolth.benchmark</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
+        <!-- Modules -->
         <dependency>
             <groupId>ru.arifolth.benchmark</groupId>
             <artifactId>derby</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ru.arifolth.benchmark</groupId>
-            <artifactId>filestorage</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -75,9 +76,11 @@
             <artifactId>embedded-tomcat</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <!--Modules with submodules -->
         <dependency>
             <groupId>ru.arifolth.benchmark</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>filestorage</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -138,7 +141,7 @@
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
                                     <resource>META-INF/LGPL3.TXT</resource>
-                                    <file>${project.parent.parent.basedir}/lgpl-3.0.txt</file>
+                                    <file>${project.parent.parent.basedir}/LICENSE.txt</file>
                                 </transformer>
                             </transformers>
                             <filters>

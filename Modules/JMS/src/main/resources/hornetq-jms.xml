@@ -9,7 +9,7 @@
 			<entry name="ConnectionFactory" />
 		</entries>
 	</connection-factory>
-	<queue name="exampleQueue">
-		<entry name="exampleQueue" />
+	<queue name="transportQueue">
+		<entry name="transportQueue" />
 	</queue>
 </configuration>

@@ -28,8 +28,14 @@ import org.slf4j.LoggerFactory;
 import ru.arifolth.benchmark.*;
 
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.Callable;
 
 /**
@@ -46,10 +52,12 @@ public class BenchmarkImpl implements Benchmark {
         };
 
     @Override
-    public BenchmarkItem call() throws Exception {
+    public BenchmarkItem call() throws TransformerException, IOException {
         LOGGER.info("Benchmarking XSLT...");
 
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        FileOutputStream fileOutputStream = null;
+
         try {
 
             for(String xsltProcessor : xsltProcessors) {
@@ -58,7 +66,8 @@ public class BenchmarkImpl implements Benchmark {
 
                 Transformer transformer = transformerFactory.newTransformer(new javax.xml.transform.stream.StreamSource(classLoader.getResourceAsStream("xsltInput.xsl")));
 
-                transformer.transform(new javax.xml.transform.stream.StreamSource(classLoader.getResourceAsStream("xsltInput.xml")), new javax.xml.transform.stream.StreamResult(new FileOutputStream("xsltResult.html")));
+                fileOutputStream = new FileOutputStream("xsltResult.html");
+                transformer.transform(new javax.xml.transform.stream.StreamSource(classLoader.getResourceAsStream("xsltInput.xml")), new javax.xml.transform.stream.StreamResult(fileOutputStream));
 
                 long elapsedMillis = xsltTimer.getElapsedMillis();
                 LOGGER.debug("xsltProcessor: " + xsltProcessor + ", Transformation took " + elapsedMillis + " milliseconds");
@@ -67,6 +76,10 @@ public class BenchmarkImpl implements Benchmark {
 
             return benchmarkItem;
         } finally {
+            if(fileOutputStream != null) {
+                fileOutputStream.close();
+            }
+
             LOGGER.info("Stop Benchmarking XSLT.");
         }
     }

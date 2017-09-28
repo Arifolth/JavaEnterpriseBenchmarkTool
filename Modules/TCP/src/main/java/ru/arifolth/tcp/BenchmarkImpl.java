@@ -33,6 +33,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.*;
 
 /**
@@ -45,7 +47,7 @@ public class BenchmarkImpl implements Benchmark {
     private BenchmarkItem benchmarkItem = new BenchmarkItem("TCPServer");
 
     @Override
-    public BenchmarkItem call() throws Exception {
+    public BenchmarkItem call() throws InterruptedException {
         LOGGER.info("Benchmarking TCP...");
         try {
             executorService.submit(new Runnable() {
@@ -151,8 +153,7 @@ public class BenchmarkImpl implements Benchmark {
             LOGGER.error(ex.getMessage());
         } finally {
             countDownLatch.await(1, TimeUnit.MINUTES);
-            executorService.shutdown();
-            executorService.awaitTermination(1, TimeUnit.SECONDS);
+            executorService.shutdownNow();
             LOGGER.info("Stop Benchmarking TCP.");
         }
 

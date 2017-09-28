@@ -39,6 +39,8 @@ import javax.xml.ws.Endpoint;
 import javax.xml.ws.soap.SOAPBinding;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.*;
 
 /**
@@ -51,7 +53,7 @@ public class BenchmarkImpl implements Benchmark {
     private final CountDownLatch latch = new CountDownLatch(1);
 
     @Override
-    public BenchmarkItem call() throws Exception {
+    public BenchmarkItem call() throws InterruptedException {
         LOGGER.info("Benchmarking WS...");
         executorService = Executors.newCachedThreadPool();
 
@@ -134,6 +136,8 @@ public class BenchmarkImpl implements Benchmark {
         } finally {
             executorService.shutdown();
             executorService.awaitTermination(1, TimeUnit.MINUTES);
+            executorService.shutdownNow();
+
             LOGGER.info("Stop Benchmarking WS.");
         }
 

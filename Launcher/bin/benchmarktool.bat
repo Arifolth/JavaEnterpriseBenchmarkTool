@@ -2,6 +2,9 @@
 
 setlocal
 
+set JAVA_HOME=C:\jdk1.7
+set PATH=%JAVA_HOME%\bin;%PATH%
+
 for /f "tokens=*" %%a in ('dir /b *.jar') do call :concat %%a
 
 echo clp: %clp%

@@ -31,7 +31,7 @@ import ru.arifolth.benchmark.*;
 
 import java.io.*;
 import java.sql.*;
-import java.util.concurrent.Callable;
+import java.util.Collections;
 
 /**
  * Created by ANilov on 11.02.2017.
@@ -43,7 +43,7 @@ public class BenchmarkImpl implements Benchmark {
     private BenchmarkItem benchmarkItem = new BenchmarkItem("JavaDB");
 
     @Override
-    public BenchmarkItem call() throws Exception {
+    public BenchmarkItem call() throws ClassNotFoundException, IOException {
         LOGGER.info("Benchmarking JavaDB...");
 
         Timer javaDBTimer = new Timer();

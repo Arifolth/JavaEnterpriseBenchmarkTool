@@ -39,6 +39,8 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -53,7 +55,7 @@ public class BenchmarkImpl implements Benchmark {
     private HttpServer server;
 
     @Override
-    public BenchmarkItem call() throws Exception {
+    public BenchmarkItem call() throws InterruptedException {
         LOGGER.info("Benchmarking EmbeddedHttp...");
         ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -187,8 +189,7 @@ public class BenchmarkImpl implements Benchmark {
         } finally {
             latch.await(1, TimeUnit.MINUTES);
 
-            executorService.shutdown();
-            executorService.awaitTermination(1, TimeUnit.SECONDS);
+            executorService.shutdownNow();
             LOGGER.info("Stop Benchmarking EmbeddedHttp.");
         }
 

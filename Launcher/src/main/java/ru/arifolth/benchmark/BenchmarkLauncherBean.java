@@ -40,13 +40,14 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 
 @Component
 public class BenchmarkLauncherBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkLauncherBean.class);
-    private static final List<Future<BenchmarkItem>> futures = new ArrayList<Future<BenchmarkItem>>();
+    private static final List<Future<BenchmarkItem>> futures = new ArrayList<>();
 
     @Autowired
     private ExecutorService executorService;
@@ -86,8 +87,7 @@ public class BenchmarkLauncherBean {
         } finally {
             generateReport();
 
-            executorService.shutdown();
-            executorService.awaitTermination(1, TimeUnit.MINUTES);
+            executorService.shutdownNow();
         }
     }
 }

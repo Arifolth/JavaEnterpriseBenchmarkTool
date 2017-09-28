@@ -26,46 +26,19 @@ package ru.arifolth.memory;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.support.SpringFactoriesLoader;
 import ru.arifolth.benchmark.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * Created by ANilov on 16.08.2017.
  */
-public class BenchmarkImpl implements Benchmark {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BenchmarkImpl.class);
-    private BenchmarkItem benchmarkItem = new BenchmarkItem("MemCpy");
-
-    @Override
-    public BenchmarkItem call() throws Exception {
-        LOGGER.info("Benchmarking MemCpy...");
-
-        try {
-            for (int mb : new int[]{10 * 1024 * 1024, 25 * 1024 * 1024, 50 * 1024 * 1024, 75 * 1024 * 1024}) {
-                copyBytes(RandomStringUtils.randomAlphabetic(mb).getBytes(), mb);
-            }
-        } catch (Exception ex) {
-            LOGGER.error(ex.getMessage());
-        } finally {
-            LOGGER.info("Stop Benchmarking MemCpy.");
-        }
-
-        return benchmarkItem;
-    }
-
-    private void copyBytes(byte[] original, int size) {
-        Timer timer = new Timer();
-
-        Arrays.copyOf(original, size);
-
-        long elapsedTime = timer.getElapsedMillis();
-        LOGGER.debug("MemCpy: " + size/(1024 * 1024) + "Mb file copy: " + size/elapsedTime/1000 + " MB/s");
-        benchmarkItem.getBenchmarkResults().add(new BenchmarkResult(size/(1024 * 1024) + "Mb file copy", size/elapsedTime/1000, MeasureEnum.MBPS));
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getCanonicalName();
+public class BenchmarkImpl extends AbstractBenchmarkImpl<AbstractMemoryBenchmark> {
+    public BenchmarkImpl() {
+        super("Memory", AbstractMemoryBenchmark.class);
     }
 }

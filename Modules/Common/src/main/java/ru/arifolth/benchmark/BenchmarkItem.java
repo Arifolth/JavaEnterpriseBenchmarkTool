@@ -25,6 +25,8 @@ package ru.arifolth.benchmark;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * Created by ANilov on 18.02.2017.
@@ -32,6 +34,7 @@ import java.util.Collection;
 public class BenchmarkItem {
     private String name;
     private Collection<BenchmarkResult> benchmarkResults = new ArrayList<BenchmarkResult>();
+    private Collection<BenchmarkItem> benchmarkItems = new HashSet<>();
 
     public BenchmarkItem(String name) {
         this.name = name;
@@ -54,8 +57,8 @@ public class BenchmarkItem {
         return benchmarkResults;
     }
 
-    public void setBenchmarkResults(Collection<BenchmarkResult> benchmarkResults) {
-        this.benchmarkResults = benchmarkResults;
+    public Collection<BenchmarkItem> getBenchmarkItems() {
+        return benchmarkItems;
     }
 
     @Override
@@ -63,17 +66,18 @@ public class BenchmarkItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BenchmarkItem benchmarkItem = (BenchmarkItem) o;
+        BenchmarkItem that = (BenchmarkItem) o;
 
-        if (name != null ? !name.equals(benchmarkItem.name) : benchmarkItem.name != null) return false;
-        return benchmarkResults != null ? benchmarkResults.equals(benchmarkItem.benchmarkResults) : benchmarkItem.benchmarkResults == null;
-
+        if (!name.equals(that.name)) return false;
+        if (!benchmarkResults.equals(that.benchmarkResults)) return false;
+        return benchmarkItems.equals(that.benchmarkItems);
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (benchmarkResults != null ? benchmarkResults.hashCode() : 0);
+        int result = name.hashCode();
+        result = 31 * result + benchmarkResults.hashCode();
+        result = 31 * result + benchmarkItems.hashCode();
         return result;
     }
 }
