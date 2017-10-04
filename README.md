@@ -4,34 +4,34 @@ This application performs simple workload tests to assess host capabilities it i
 ## Pre-requisites:
 This project requires Java 7+
 
-##Available modules:
-###File transfer speed tests:
+## Available modules:
+### File transfer speed tests:
 - TCP
 - HTTP
 - SOAP
-###HDD test:
+### HDD test:
 - read/write ratio
-###XSLT transformation:
+### XSLT transformation:
 - Xalan
 - JDK bundled Xalan
 - Saxon
-###JavaDB (Derby) CRUD operations test
+### JavaDB (Derby) CRUD operations test
 - Create
 - Read
 - Update
 - Delete
-###Memory speed test:
+### Memory speed test:
 - Arrays.copyOf
 - System.arraycopy
-###JMS sending/receiving speed test:
+### JMS sending/receiving speed test:
 - HornetQ
 
-##Features:
+## Features:
 - Uses configurable Logger to output messages
 - Modular structure (with module auto-loading and submodules etc.)
 - XML format report
 
-##Build   
+## Build   
 Execute
 
     mvn clean package
@@ -40,7 +40,7 @@ It will generate an "executable" JAR file
 
     %ROOT%\Launcher\target\launcher-1.0-SNAPSHOT.jar
     
-##Run
+## Run
 
 Change current working dir to 
 
@@ -56,13 +56,13 @@ Unix platforms
 
     benchmarktool.sh
 
-##Result
+## Result
 
 Look at report
 
     BenchmarkResult.xml
 
-##TODO:
+## TODO:
 
 - externalized configuration
 - JavascriptEngine benchmark
