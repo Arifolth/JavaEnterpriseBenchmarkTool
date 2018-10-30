@@ -2,7 +2,7 @@
 This application performs simple workload tests to assess host capabilities it is running on
 
 ## Pre-requisites:
-This project requires Java 7+
+Project could be compiled to run either Java 5, Java 6, Java 7 or Java 8.
 
 ## Available modules:
 ### File transfer speed tests:
@@ -67,6 +67,8 @@ Look at report
 - externalized configuration
 - JavascriptEngine benchmark
 - more hdd benchmarks
+- more JMS benchmarks
+- NOSQL benchmarks
 
 ## License and Copyright
 This project is released under [LGPL-3](http://www.gnu.org/licenses/lgpl-3.0.html)
